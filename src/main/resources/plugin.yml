@@ -1,0 +1,6 @@
+name: QRCode
+version: "1.0.0"
+api: ["1.0.0"]
+author: Scallop
+description: A QR code generator
+main: cn.yescallop.qrcode.Main
