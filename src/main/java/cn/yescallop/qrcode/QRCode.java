@@ -10,7 +10,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
-import com.sun.istack.internal.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,27 +25,27 @@ public class QRCode {
 
     private List<Vector3> list;
 
-    public QRCode at(@NotNull Position pos) {
+    public QRCode at(Position pos) {
         this.pos = pos;
         return this;
     }
 
-    public QRCode orientation(@NotNull Orientation orientation) {
+    public QRCode orientation(Orientation orientation) {
         this.orientation = orientation;
         return this;
     }
 
-    public QRCode direction(@NotNull Direction direction) {
+    public QRCode direction(Direction direction) {
         this.direction = direction;
         return this;
     }
 
-    public QRCode rotation(@NotNull Rotation rotation) {
+    public QRCode rotation(Rotation rotation) {
         this.rotation = rotation;
         return this;
     }
 
-    public QRCode content(@NotNull String content) {
+    public QRCode content(String content) {
         this.content = content;
         return this;
     }
