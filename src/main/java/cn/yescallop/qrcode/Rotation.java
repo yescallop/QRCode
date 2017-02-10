@@ -18,4 +18,18 @@ public enum Rotation {
         int distance = rotation.angle - this.angle;
         return distance == -180 ? 180 : (distance % 180);
     }
+
+    public Rotation getNextRotation() {
+        switch (this) {
+            case NORTH:
+                return WEST;
+            case WEST:
+                return SOUTH;
+            case SOUTH:
+                return EAST;
+            case EAST:
+                return NORTH;
+        }
+        return null;
+    }
 }
