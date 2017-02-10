@@ -17,11 +17,11 @@ public abstract class QRCode {
 
     protected Level level;
     protected Vector3 pos;
-    protected Rotation rotation;
+    protected Rotation rotation = Rotation.NORTH;
     protected String content;
 
     protected QRCodeMatrix matrix;
-    protected Map<Vector3, Boolean> area;
+    protected Map<Vector3, Boolean> area = new HashMap<>();
     protected boolean valid;
 
     protected void calculate() throws WriterException {

@@ -19,12 +19,16 @@ public class HorizontalQRCode extends QRCode {
         switch (direction) {
             case EAST_NORTH:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
+                break;
             case WEST_NORTH:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
+                break;
             case WEST_SOUTH:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y - n), b));
+                break;
             case EAST_SOUTH:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y - n), b));
+                break;
         }
     }
 

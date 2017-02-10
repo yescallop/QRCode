@@ -15,24 +15,33 @@ public class VerticalQRCode extends QRCode {
 
     @Override
     protected void calculateArea() {
+        area.clear();
         final int n = matrix.size() - 1;
         switch (direction) {
             case NORTH_UP:
                 matrix.forEach((x, y, b) -> area.put(pos.add(0, x, n - y), b));
+                break;
             case SOUTH_UP:
                 matrix.forEach((x, y, b) -> area.put(pos.add(0, x - n, n - y), b));
+                break;
             case SOUTH_DOWN:
                 matrix.forEach((x, y, b) -> area.put(pos.add(0, x - n, y - n), b));
+                break;
             case NORTH_DOWN:
                 matrix.forEach((x, y, b) -> area.put(pos.add(0, x, y - n), b));
+                break;
             case WEST_UP:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x, n - y, 0), b));
+                break;
             case EAST_UP:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, n - y, 0), b));
+                break;
             case EAST_DOWN:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, y - n, 0), b));
+                break;
             case WEST_DOWN:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x, y - n, 0), b));
+                break;
         }
     }
 
