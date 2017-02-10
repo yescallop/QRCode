@@ -6,6 +6,6 @@ public class Main extends PluginBase {
 
     @Override
     public void onEnable() {
-        
+
     }
 }
