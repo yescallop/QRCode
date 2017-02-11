@@ -1,6 +1,10 @@
-package cn.yescallop.qrcode.vertical;
+package cn.yescallop.qrcode;
 
-public enum VerticalDirection {
+public enum Direction {
+    EAST_NORTH,
+    WEST_NORTH,
+    WEST_SOUTH,
+    EAST_SOUTH,
     NORTH_UP,
     NORTH_DOWN,
     SOUTH_UP,

@@ -2,13 +2,13 @@ package cn.yescallop.qrcode;
 
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 
-public class QRCodeMatrix {
+public class Matrix {
 
     private final boolean[][] matrix;
     private final int size;
     private Rotation rotation = Rotation.NORTH;
 
-    public QRCodeMatrix(ByteMatrix byteMatrix) {
+    public Matrix(ByteMatrix byteMatrix) {
         if (byteMatrix.getHeight() != byteMatrix.getWidth()) {
             throw new IllegalArgumentException("byteMatrix must be square!");
         }
@@ -21,7 +21,7 @@ public class QRCodeMatrix {
         }
     }
 
-    public QRCodeMatrix rotate(Rotation rotation) {
+    public Matrix rotate(Rotation rotation) {
         if (this.rotation == rotation) {
             return this;
         }
@@ -69,11 +69,16 @@ public class QRCodeMatrix {
         return size;
     }
 
-    public void forEach(MatrixConsumer action) {
+    public void forEach(Consumer action) {
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 action.accept(x, y, matrix[x][y]);
             }
         }
+    }
+
+    @FunctionalInterface
+    public interface Consumer {
+        void accept(int x, int y, boolean b);
     }
 }
