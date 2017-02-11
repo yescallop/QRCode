@@ -6,10 +6,12 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
+import com.google.zxing.common.CharacterSetECI;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,8 @@ public final class QRCode {
     private Direction direction;
     private Rotation rotation = Rotation.NORTH;
     private String content;
+    private String encoding = "UTF-8";
+    private ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L;
 
     private Matrix matrix;
     private Map<Vector3, Boolean> area = new HashMap<>();
@@ -30,8 +34,8 @@ public final class QRCode {
 
     private void calculate() throws WriterException {
         Map<EncodeHintType, Object> hints = new HashMap<>();
-        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-        ByteMatrix byteMatrix = Encoder.encode(content, ErrorCorrectionLevel.L, hints).getMatrix();
+        hints.put(EncodeHintType.CHARACTER_SET, encoding);
+        ByteMatrix byteMatrix = Encoder.encode(content, ecLevel, hints).getMatrix();
         matrix = new Matrix(byteMatrix).rotate(this.rotation);
         calculateArea();
     }
@@ -99,7 +103,8 @@ public final class QRCode {
     }
 
     public void revert() {
-        area.keySet().forEach(v -> level.setBlock(v, new BlockAir()));
+        Block air = new BlockAir();
+        area.keySet().forEach(v -> level.setBlock(v, air));
     }
 
     public boolean valid() {
@@ -136,6 +141,26 @@ public final class QRCode {
 
         public Builder content(String content) {
             qrCode.content = content;
+            return this;
+        }
+
+        public Builder encoding(CharacterSetECI encoding) {
+            qrCode.encoding = encoding.name();
+            return this;
+        }
+
+        public Builder encoding(Charset encoding) {
+            qrCode.encoding = encoding.name();
+            return this;
+        }
+
+        public Builder encoding(String encoding) {
+            qrCode.encoding = encoding;
+            return this;
+        }
+
+        public Builder errorCorrectionLevel(ErrorCorrectionLevel ecLevel) {
+            qrCode.ecLevel = ecLevel;
             return this;
         }
 
