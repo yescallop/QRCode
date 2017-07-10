@@ -1,6 +1,6 @@
 package cn.yescallop.qrcode;
 
-public enum Direction {
+public enum Orientation {
     EAST_NORTH,
     WEST_NORTH,
     WEST_SOUTH,

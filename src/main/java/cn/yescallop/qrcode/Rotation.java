@@ -1,7 +1,6 @@
 package cn.yescallop.qrcode;
 
 public enum Rotation {
-
     NORTH(0), WEST(90), SOUTH(180), EAST(270);
 
     private int angle;
@@ -27,16 +26,30 @@ public enum Rotation {
         return distance;
     }
 
-    public Rotation getNextRotation() {
+    public Rotation rotate() {
+        switch (this) {
+            case NORTH:
+                return EAST;
+            case EAST:
+                return SOUTH;
+            case SOUTH:
+                return WEST;
+            case WEST:
+                return NORTH;
+        }
+        return null;
+    }
+
+    public Rotation rotateCCW() {
         switch (this) {
             case NORTH:
                 return WEST;
-            case WEST:
-                return SOUTH;
-            case SOUTH:
-                return EAST;
             case EAST:
                 return NORTH;
+            case SOUTH:
+                return EAST;
+            case WEST:
+                return SOUTH;
         }
         return null;
     }
