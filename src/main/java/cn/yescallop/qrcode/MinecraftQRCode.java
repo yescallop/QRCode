@@ -53,7 +53,6 @@ public class MinecraftQRCode {
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
         sendBlocks(pks);
-        valid = false;
         previewing = false;
         return this;
     }
