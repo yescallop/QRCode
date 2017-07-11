@@ -43,6 +43,7 @@ public class MinecraftQRCode {
     public MinecraftQRCode place() {
         checkPlaced();
         area.forEach((v, b) -> level.setBlock(v, b ? foreground : background));
+        sendBlocks();
         placed = true;
         previewing = false;
         return this;
@@ -137,6 +138,11 @@ public class MinecraftQRCode {
     }
 
     public void preview() {
+        sendBlocks();
+        previewing = true;
+    }
+
+    public void sendBlocks() {
         checkPlaced();
         Stream<UpdateBlockPacket> stream = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
@@ -152,7 +158,6 @@ public class MinecraftQRCode {
         Player[] players = stream.flatMap(pk -> level.getChunkPlayers(pk.x >> 4, pk.y >> 4).values().stream())
                 .toArray(Player[]::new);
         Server.getInstance().batchPackets(players, stream.toArray(UpdateBlockPacket[]::new));
-        previewing = true;
     }
 
     public void undoPreview() {
@@ -190,8 +195,46 @@ public class MinecraftQRCode {
         if (turned) {
             matrix = matrix.turnVertically();
         }
+        int n = matrix.size() - 1;
         switch (orientation) {
-            //TODO: calculate
+            //Horizontal
+            case EAST_NORTH:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
+                break;
+            case WEST_NORTH:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
+                break;
+            case WEST_SOUTH:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y - n), b));
+                break;
+            case EAST_SOUTH:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y - n), b));
+                break;
+            //Vertical
+            case NORTH_UP:
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, x, n - y), b));
+                break;
+            case NORTH_DOWN:
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, x, y - n), b));
+                break;
+            case SOUTH_UP:
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, x - n, n - y), b));
+                break;
+            case SOUTH_DOWN:
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, x - n, y - n), b));
+                break;
+            case EAST_UP:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, n - y, 0), b));
+                break;
+            case EAST_DOWN:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, y - n, 0), b));
+                break;
+            case WEST_UP:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, n - y, 0), b));
+                break;
+            case WEST_DOWN:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, y - n, 0), b));
+                break;
         }
     }
 

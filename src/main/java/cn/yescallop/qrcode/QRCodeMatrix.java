@@ -7,6 +7,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -204,6 +205,11 @@ public class QRCodeMatrix implements Cloneable {
 
         public Builder errorCorrectionLevel(ErrorCorrectionLevel ecLevel) {
             this.ecLevel = ecLevel;
+            return this;
+        }
+
+        public Builder charset(Charset charset) {
+            this.charset = charset.name();
             return this;
         }
 
