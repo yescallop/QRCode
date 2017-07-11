@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
+import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 
@@ -142,7 +143,7 @@ public class MinecraftQRCode {
         previewing = true;
     }
 
-    public void sendBlocks() {
+    private void sendBlocks() {
         checkPlaced();
         Stream<UpdateBlockPacket> stream = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
@@ -260,6 +261,12 @@ public class MinecraftQRCode {
     public static class Builder {
 
         private final MinecraftQRCode qrCode = new MinecraftQRCode();
+
+        public Builder at(Position pos) {
+            qrCode.level = pos.level;
+            qrCode.pos = pos;
+            return this;
+        }
 
         public Builder at(Level level, Vector3 pos) {
             qrCode.level = level;
