@@ -201,7 +201,7 @@ public class MinecraftQRCode {
         }
     }
 
-    private void calculateArea() {
+    private void calculateArea() { //Minecraft uses right-handed coordinate system
         area = new HashMap<>();
         QRCodeMatrix matrix = this.matrix.magnify(magnifier).border(borderSize);
         if (turned) {
@@ -211,29 +211,29 @@ public class MinecraftQRCode {
         switch (orientation) {
             //Horizontal
             case EAST_NORTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y - n), b));
                 break;
             case WEST_NORTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
-                break;
-            case WEST_SOUTH:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y - n), b));
                 break;
+            case WEST_SOUTH:
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
+                break;
             case EAST_SOUTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y - n), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
                 break;
             //Vertical
             case NORTH_UP:
-                matrix.forEach((x, y, b) -> area.put(pos.add(0, n - y, x), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, n - y, -x), b));
                 break;
             case NORTH_DOWN:
-                matrix.forEach((x, y, b) -> area.put(pos.add(0, y - n, x), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, y - n, -x), b));
                 break;
             case SOUTH_UP:
-                matrix.forEach((x, y, b) -> area.put(pos.add(0, n - y, x - n), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, n - y, n - x), b));
                 break;
             case SOUTH_DOWN:
-                matrix.forEach((x, y, b) -> area.put(pos.add(0, y - n, x - n), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(0, y - n, n - x), b));
                 break;
             case EAST_UP:
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, n - y, 0), b));
