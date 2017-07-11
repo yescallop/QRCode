@@ -26,23 +26,23 @@ public class MinecraftQRCode {
 
     private Map<Vector3, Boolean> area;
     private boolean previewing = false;
-    private boolean placed = false;
+    private boolean valid = true;
 
     private MinecraftQRCode() {
     }
 
-    public boolean isPlaced() {
-        return placed;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void checkPlaced() {
-        if (placed) {
-            throw new RuntimeException("QR code has been placed");
+    public void checkValid() {
+        if (!valid) {
+            throw new RuntimeException("Attempt to do stuff on an invalid MinecraftQRCode instance");
         }
     }
 
     public MinecraftQRCode place() {
-        checkPlaced();
+        checkValid();
         area.forEach((v, b) -> level.setBlock(v, b ? foreground : background));
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
@@ -56,7 +56,7 @@ public class MinecraftQRCode {
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
         sendBlocks(pks);
-        placed = true;
+        valid = false;
         previewing = false;
         return this;
     }
@@ -66,7 +66,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode orientation(Orientation o) {
-        checkPlaced();
+        checkValid();
         if (o != this.orientation) {
             this.orientation = o;
             calculateArea();
@@ -76,7 +76,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode rotate() {
-        checkPlaced();
+        checkValid();
         matrix.rotate();
         calculateArea();
         refreshPreview(false);
@@ -84,7 +84,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode rotateCCW() {
-        checkPlaced();
+        checkValid();
         matrix.rotateCCW();
         calculateArea();
         refreshPreview(false);
@@ -96,7 +96,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode rotation(Rotation rotation) {
-        checkPlaced();
+        checkValid();
         if (rotation != matrix.rotation()) {
             matrix.rotation(rotation);
             calculateArea();
@@ -110,7 +110,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode magnifier(int magnifier) {
-        checkPlaced();
+        checkValid();
         if (magnifier != this.magnifier) {
             this.magnifier = magnifier;
             calculateArea();
@@ -124,7 +124,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode borderSize(int size) {
-        checkPlaced();
+        checkValid();
         if (size != this.borderSize) {
             this.borderSize = size;
             calculateArea();
@@ -138,7 +138,7 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode turn() {
-        checkPlaced();
+        checkValid();
         this.turned = !this.turned;
         calculateArea();
         refreshPreview(false);
@@ -150,7 +150,7 @@ public class MinecraftQRCode {
     }
 
     public void preview() {
-        checkPlaced();
+        checkValid();
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
             UpdateBlockPacket pk = new UpdateBlockPacket();
@@ -167,7 +167,7 @@ public class MinecraftQRCode {
     }
 
     public void undoPreview() {
-        checkPlaced();
+        checkValid();
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             int fullBlock = level.getFullBlock((int) v.x, (int) v.y, (int) v.z);
             UpdateBlockPacket pk = new UpdateBlockPacket();
@@ -251,6 +251,7 @@ public class MinecraftQRCode {
                 matrix.forEach((x, y, b) -> area.put(pos.add(-x, -y, 0), b));
                 break;
         }
+        valid = area.keySet().stream().map(v -> v.y).max(Double::compareTo).get() < 255;
     }
 
     public Map<Vector3, Boolean> area() {
