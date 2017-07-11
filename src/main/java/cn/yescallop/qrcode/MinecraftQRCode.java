@@ -7,6 +7,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
+import cn.nukkit.utils.PluginException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +36,10 @@ public class MinecraftQRCode {
         return valid;
     }
 
-    public void checkValid() {
-        if (!valid) {
-            throw new RuntimeException("Attempt to do stuff on an invalid MinecraftQRCode instance");
-        }
-    }
-
     public MinecraftQRCode place() {
-        checkValid();
+        if (!valid) {
+            throw new PluginException("Attempt to place an invalid QR code");
+        }
         area.forEach((v, b) -> level.setBlock(v, b ? foreground : background));
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
@@ -66,28 +63,22 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode orientation(Orientation o) {
-        checkValid();
         if (o != this.orientation) {
             this.orientation = o;
             calculateArea();
-            refreshPreview();
         }
         return this;
     }
 
     public MinecraftQRCode rotate() {
-        checkValid();
         matrix.rotate();
         calculateArea();
-        refreshPreview(false);
         return this;
     }
 
     public MinecraftQRCode rotateCCW() {
-        checkValid();
         matrix.rotateCCW();
         calculateArea();
-        refreshPreview(false);
         return this;
     }
 
@@ -96,11 +87,9 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode rotation(Rotation rotation) {
-        checkValid();
         if (rotation != matrix.rotation()) {
             matrix.rotation(rotation);
             calculateArea();
-            refreshPreview(false);
         }
         return this;
     }
@@ -110,11 +99,9 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode magnifier(int magnifier) {
-        checkValid();
         if (magnifier != this.magnifier) {
             this.magnifier = magnifier;
             calculateArea();
-            refreshPreview();
         }
         return this;
     }
@@ -124,11 +111,9 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode borderSize(int size) {
-        checkValid();
         if (size != this.borderSize) {
             this.borderSize = size;
             calculateArea();
-            refreshPreview();
         }
         return this;
     }
@@ -138,10 +123,8 @@ public class MinecraftQRCode {
     }
 
     public MinecraftQRCode turn() {
-        checkValid();
         this.turned = !this.turned;
         calculateArea();
-        refreshPreview(false);
         return this;
     }
 
@@ -150,7 +133,9 @@ public class MinecraftQRCode {
     }
 
     public void preview() {
-        checkValid();
+        if (!valid) {
+            throw new PluginException("Attempt to preview an invalid QR code");
+        }
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
             UpdateBlockPacket pk = new UpdateBlockPacket();
@@ -167,7 +152,7 @@ public class MinecraftQRCode {
     }
 
     public void undoPreview() {
-        checkValid();
+        if (!valid || !previewing) return;
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             int fullBlock = level.getFullBlock((int) v.x, (int) v.y, (int) v.z);
             UpdateBlockPacket pk = new UpdateBlockPacket();
@@ -193,18 +178,9 @@ public class MinecraftQRCode {
         Server.getInstance().batchPackets(players, pks);
     }
 
-    public void refreshPreview() {
-        refreshPreview(true);
-    }
-
-    public void refreshPreview(boolean forced) {
-        if (previewing) {
-            if (forced) undoPreview();
-            preview();
-        }
-    }
-
     private void calculateArea() { //Minecraft uses right-handed coordinate system
+        boolean previewing = this.previewing;
+        undoPreview();
         area = new HashMap<>();
         QRCodeMatrix matrix = this.matrix.magnify(magnifier).border(borderSize);
         if (turned) {
@@ -252,6 +228,7 @@ public class MinecraftQRCode {
                 break;
         }
         valid = area.keySet().stream().map(v -> v.y).max(Double::compareTo).get() < 255;
+        if (valid && previewing) preview();
     }
 
     public Map<Vector3, Boolean> area() {
