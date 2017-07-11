@@ -169,13 +169,13 @@ public class MinecraftQRCode {
     public void undoPreview() {
         checkPlaced();
         UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
-            Block block = area.get(v) ? foreground : background;
+            int fullBlock = level.getFullBlock((int) v.x, (int) v.y, (int) v.z);
             UpdateBlockPacket pk = new UpdateBlockPacket();
             pk.x = (int) v.x;
             pk.y = (int) v.y;
             pk.z = (int) v.z;
-            pk.blockId = level.getBlockIdAt((int) v.x, (int) v.y, (int) v.z);
-            pk.blockData = level.getBlockDataAt((int) v.x, (int) v.y, (int) v.z);
+            pk.blockId = fullBlock >> 4;
+            pk.blockData = fullBlock & 0xf;
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
@@ -184,7 +184,8 @@ public class MinecraftQRCode {
     }
 
     private void sendBlocks(UpdateBlockPacket[] pks) {
-        Player[] players = Stream.of(pks).flatMap(pk -> level.getChunkPlayers(pk.x >> 4, pk.y >> 4).values().stream())
+        Player[] players = Stream.of(pks).map(pk -> Level.chunkHash(pk.x >> 4, pk.z >> 4))
+                .flatMap(hash -> level.getChunkPlayers((int) (hash >> 32), hash.intValue()).values().stream())
                 .toArray(Player[]::new);
         Server.getInstance().batchPackets(players, pks);
     }
