@@ -44,7 +44,18 @@ public class MinecraftQRCode {
     public MinecraftQRCode place() {
         checkPlaced();
         area.forEach((v, b) -> level.setBlock(v, b ? foreground : background));
-        sendBlocks();
+        UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
+            Block block = area.get(v) ? foreground : background;
+            UpdateBlockPacket pk = new UpdateBlockPacket();
+            pk.x = (int) v.x;
+            pk.y = (int) v.y;
+            pk.z = (int) v.z;
+            pk.blockId = block.getId();
+            pk.blockData = block.getDamage();
+            pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
+            return pk;
+        }).toArray(UpdateBlockPacket[]::new);
+        sendBlocks(pks);
         placed = true;
         previewing = false;
         return this;
@@ -139,13 +150,8 @@ public class MinecraftQRCode {
     }
 
     public void preview() {
-        sendBlocks();
-        previewing = true;
-    }
-
-    private void sendBlocks() {
         checkPlaced();
-        Stream<UpdateBlockPacket> stream = area.keySet().stream().map(v -> {
+        UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
             Block block = area.get(v) ? foreground : background;
             UpdateBlockPacket pk = new UpdateBlockPacket();
             pk.x = (int) v.x;
@@ -155,15 +161,15 @@ public class MinecraftQRCode {
             pk.blockData = block.getDamage();
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
-        });
-        Player[] players = stream.flatMap(pk -> level.getChunkPlayers(pk.x >> 4, pk.y >> 4).values().stream())
-                .toArray(Player[]::new);
-        Server.getInstance().batchPackets(players, stream.toArray(UpdateBlockPacket[]::new));
+        }).toArray(UpdateBlockPacket[]::new);
+        sendBlocks(pks);
+        previewing = true;
     }
 
     public void undoPreview() {
         checkPlaced();
-        Stream<UpdateBlockPacket> stream = area.keySet().stream().map(v -> {
+        UpdateBlockPacket[] pks = area.keySet().stream().map(v -> {
+            Block block = area.get(v) ? foreground : background;
             UpdateBlockPacket pk = new UpdateBlockPacket();
             pk.x = (int) v.x;
             pk.y = (int) v.y;
@@ -172,11 +178,15 @@ public class MinecraftQRCode {
             pk.blockData = level.getBlockDataAt((int) v.x, (int) v.y, (int) v.z);
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
-        });
-        Player[] players = stream.flatMap(pk -> level.getChunkPlayers(pk.x >> 4, pk.y >> 4).values().stream())
-                .toArray(Player[]::new);
-        Server.getInstance().batchPackets(players, stream.toArray(UpdateBlockPacket[]::new));
+        }).toArray(UpdateBlockPacket[]::new);
+        sendBlocks(pks);
         previewing = false;
+    }
+
+    private void sendBlocks(UpdateBlockPacket[] pks) {
+        Player[] players = Stream.of(pks).flatMap(pk -> level.getChunkPlayers(pk.x >> 4, pk.y >> 4).values().stream())
+                .toArray(Player[]::new);
+        Server.getInstance().batchPackets(players, pks);
     }
 
     public void refreshPreview() {
