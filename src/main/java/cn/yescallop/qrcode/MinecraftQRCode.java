@@ -184,8 +184,11 @@ public class MinecraftQRCode {
     }
 
     private void sendBlocks(UpdateBlockPacket[] pks) {
-        Player[] players = Stream.of(pks).map(pk -> Level.chunkHash(pk.x >> 4, pk.z >> 4))
+        Player[] players = Stream.of(pks)
+                .map(pk -> Level.chunkHash(pk.x >> 4, pk.z >> 4))
+                .distinct()
                 .flatMap(hash -> level.getChunkPlayers((int) (hash >> 32), hash.intValue()).values().stream())
+                .distinct()
                 .toArray(Player[]::new);
         Server.getInstance().batchPackets(players, pks);
     }
@@ -217,10 +220,10 @@ public class MinecraftQRCode {
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y - n), b));
                 break;
             case WEST_SOUTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y), b));
                 break;
             case EAST_SOUTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y), b));
                 break;
             //Vertical
             case NORTH_UP:
