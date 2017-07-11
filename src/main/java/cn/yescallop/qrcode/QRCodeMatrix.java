@@ -142,7 +142,7 @@ public class QRCodeMatrix implements Cloneable {
             for (int y = 0; y < size; y++) {
                 int k = y * m;
                 result[j][k] = matrix[x][y];
-                for (int i = 1; i <= m; i++) {
+                for (int i = 1; i < m; i++) {
                     result[j][k] = result[j + i][k] = result[j][k + i] = result[j + i][k + i] = matrix[x][y];
                 }
             }
@@ -154,9 +154,9 @@ public class QRCodeMatrix implements Cloneable {
         if (s == 0) {
             return this;
         }
-        boolean[][] result = new boolean[size + s][size + s];
+        boolean[][] result = new boolean[size + s * 2][size + s * 2];
         for (int x = 0; x < size; x++) {
-            System.arraycopy(result[x], 0, result[x + s], s, size);
+            System.arraycopy(matrix[x], 0, result[x + s], s, size);
         }
         return new QRCodeMatrix(result, rotation);
     }
