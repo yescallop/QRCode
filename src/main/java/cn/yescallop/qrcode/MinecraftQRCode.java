@@ -217,10 +217,10 @@ public class MinecraftQRCode {
                 matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y - n), b));
                 break;
             case WEST_SOUTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, n - y), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x - n, 0, y), b));
                 break;
             case EAST_SOUTH:
-                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, n - y), b));
+                matrix.forEach((x, y, b) -> area.put(pos.add(x, 0, y), b));
                 break;
             //Vertical
             case NORTH_UP:
