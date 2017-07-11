@@ -287,7 +287,7 @@ public class MinecraftQRCode {
 
         public Builder magnifier(int magnifier) {
             if (magnifier < 0) {
-                throw new IllegalArgumentException("magnifier cannnot be negative!");
+                throw new IllegalArgumentException("Magnifier cannot be negative!");
             }
             qrCode.magnifier = magnifier;
             return this;
@@ -295,7 +295,7 @@ public class MinecraftQRCode {
 
         public Builder borderSize(int size) {
             if (size < 0) {
-                throw new IllegalArgumentException("border size cannnot be negative!");
+                throw new IllegalArgumentException("Border size cannot be negative!");
             }
             qrCode.borderSize = size;
             return this;
