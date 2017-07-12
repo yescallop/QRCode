@@ -204,7 +204,7 @@ public class ParamsCommand extends SubCommand {
                 }
                 player.sendMessage(Language.translate("commands.params.set.success", args[1], value));
             }
-        } else if (args[1].equals("get")) {
+        } else if (args[0].equals("get")) {
             if (args.length == 1) {
                 sendValues(player);
             } else if (args.length == 2) {
