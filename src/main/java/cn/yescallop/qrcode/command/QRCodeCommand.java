@@ -32,6 +32,7 @@ public class QRCodeCommand extends Command {
         subCommands.add(new PreviewCommand());
         subCommands.add(new RemoveCommand());
         subCommands.add(new RotateCommand());
+        subCommands.add(new SetCommand());
         subCommands.add(new TurnCommand());
     }
 
@@ -44,6 +45,10 @@ public class QRCodeCommand extends Command {
         list.add(Language.translate("commands.help.header"));
         subCommands.forEach(c -> list.add(TextFormat.DARK_GREEN + "/qrcode " + c.getName() + ": " + TextFormat.WHITE + Language.translate("commands." + c.getName() + ".description")));
         list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
+    }
+
+    public static QRCode getPlugin() {
+        return plugin;
     }
 
     @Override
@@ -65,9 +70,5 @@ public class QRCodeCommand extends Command {
             return false;
         }
         return cmd.get().execute((Player) sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
-    }
-
-    public static QRCode getPlugin() {
-        return plugin;
     }
 }

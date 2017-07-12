@@ -14,6 +14,10 @@ public class PlaceCommand extends SubCommand {
 
     @Override
     protected boolean execute(Player player, String[] args) {
+        if (args.length != 0) {
+            this.sendUsage(player);
+            return false;
+        }
         if (!checkHasQRCode(player)) {
             return false;
         }

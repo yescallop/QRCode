@@ -113,6 +113,22 @@ public class MinecraftQRCode {
         }
     }
 
+    public void foreground(Block block) {
+        this.foreground = block;
+    }
+
+    public Block foreground() {
+        return foreground;
+    }
+
+    public void background(Block block) {
+        this.background = block;
+    }
+
+    public Block background() {
+        return background;
+    }
+
     public void rotate() {
         matrix.rotate();
         calculateArea();
@@ -305,7 +321,19 @@ public class MinecraftQRCode {
         WEST_UP,
         WEST_DOWN,
         EAST_UP,
-        EAST_DOWN
+        EAST_DOWN;
+
+        public static Orientation byName(String name) {
+            try {
+                return Orientation.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
+
+        public String getName() {
+            return name().toLowerCase();
+        }
     }
 
     public static class Builder {
@@ -329,12 +357,12 @@ public class MinecraftQRCode {
             return this;
         }
 
-        public Builder foregroundBlock(Block block) {
+        public Builder foreground(Block block) {
             qrCode.foreground = block;
             return this;
         }
 
-        public Builder backgroundBlock(Block block) {
+        public Builder background(Block block) {
             qrCode.background = block;
             return this;
         }

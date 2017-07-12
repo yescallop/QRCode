@@ -20,6 +20,10 @@ public class HelpCommand extends SubCommand {
             QRCodeCommand.sendUsages(player);
             return true;
         }
+        if (args.length > 1) {
+            this.sendUsage(player);
+            return false;
+        }
         Optional<SubCommand> command = QRCodeCommand.getSubCommand(args[0]);
         if (!command.isPresent()) {
             player.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));

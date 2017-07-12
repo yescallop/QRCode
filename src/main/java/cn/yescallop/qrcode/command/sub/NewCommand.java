@@ -34,8 +34,8 @@ public class NewCommand extends SubCommand {
         MinecraftQRCode qrCode;
         try {
             qrCode = new MinecraftQRCode.Builder()
-                    .foregroundBlock(new BlockWool(DyeColor.BLACK))
-                    .backgroundBlock(new BlockWool(DyeColor.WHITE))
+                    .foreground(new BlockWool(DyeColor.BLACK))
+                    .background(new BlockWool(DyeColor.WHITE))
                     .content(Stream.of(args).reduce((a, b) -> a + " " + b).get())
                     .orientation(MinecraftQRCode.Orientation.SOUTH_UP)
                     .build();
