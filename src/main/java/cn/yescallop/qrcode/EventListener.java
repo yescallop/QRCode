@@ -5,8 +5,8 @@ import cn.yescallop.qrcode.lang.Language;
 
 public class EventListener implements Listener {
 
-    private QRCode plugin;
-    private Language lang;
+    private final QRCode plugin;
+    private final Language lang;
 
     public EventListener(QRCode plugin) {
         this.plugin = plugin;
