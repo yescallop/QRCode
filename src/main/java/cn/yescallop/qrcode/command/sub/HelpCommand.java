@@ -5,6 +5,8 @@ import cn.nukkit.utils.TextFormat;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
 
+import java.util.Optional;
+
 public class HelpCommand extends SubCommand {
 
     public HelpCommand(QRCodeCommand mainCommand) {
@@ -17,12 +19,12 @@ public class HelpCommand extends SubCommand {
             mainCommand.sendUsages(sender);
             return true;
         }
-        SubCommand command = mainCommand.getSubCommand(args[0]);
-        if (command == null) {
+        Optional<SubCommand> command = mainCommand.getSubCommand(args[0]);
+        if (!command.isPresent()) {
             sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.notFound"));
             return false;
         }
-        command.sendUsage(sender);
+        command.get().sendUsage(sender);
         return true;
     }
 }

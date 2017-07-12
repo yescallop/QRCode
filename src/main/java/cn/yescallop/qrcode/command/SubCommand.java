@@ -9,6 +9,7 @@ import cn.yescallop.qrcode.lang.Language;
 public abstract class SubCommand {
 
     private final String name;
+    private String[] aliases;
     protected final QRCodeCommand mainCommand;
     protected final Language lang;
 
@@ -16,6 +17,18 @@ public abstract class SubCommand {
         this.name = name;
         this.mainCommand = mainCommand;
         this.lang = mainCommand.getLanguage();
+    }
+
+    public void setAliases(String... aliases) {
+        this.aliases = aliases;
+    }
+
+    public String[] getAliases() {
+        return aliases;
+    }
+
+    public String getName() {
+        return name;
     }
 
     protected abstract boolean execute(CommandSender sender, String[] args);
