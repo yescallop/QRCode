@@ -67,7 +67,7 @@ public class QRCodeCommand extends Command {
     }
 
     public Optional<SubCommand> getSubCommand(String name) {
-        return subCommands.stream().filter(c -> c.getName().equals(name) || Arrays.asList(c.getAliases()).contains(name)).findAny();
+        return subCommands.stream().filter(c -> c.getName().equals(name)).findAny();
     }
 
     public void sendUsages(CommandSender sender) {

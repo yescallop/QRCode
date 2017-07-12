@@ -11,20 +11,11 @@ public abstract class SubCommand {
     protected final QRCodeCommand mainCommand;
     protected final Language lang;
     private final String name;
-    private String[] aliases = new String[0];
 
     protected SubCommand(QRCodeCommand mainCommand, String name) {
         this.name = name;
         this.mainCommand = mainCommand;
         this.lang = mainCommand.getLanguage();
-    }
-
-    public String[] getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(String... aliases) {
-        this.aliases = aliases;
     }
 
     public String getName() {

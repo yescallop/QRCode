@@ -18,7 +18,6 @@ public class NewCommand extends SubCommand {
 
     public NewCommand(QRCodeCommand mainCommand) {
         super(mainCommand, "new");
-        this.setAliases("create");
     }
 
     @Override

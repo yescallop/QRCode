@@ -13,13 +13,17 @@ import java.util.List;
 
 public class EventListener implements Listener {
 
+    private static List<Player> posSettingWaitingList = new ArrayList<>();
     private final QRCode plugin;
     private final Language lang;
-    private static List<Player> posSettingWaitingList = new ArrayList<>();
 
     public EventListener(QRCode plugin) {
         this.plugin = plugin;
         this.lang = plugin.getLanguage();
+    }
+
+    public static void addPlayerToPosSettingWaitingList(Player player) {
+        posSettingWaitingList.add(player);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -37,9 +41,5 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         posSettingWaitingList.remove(event.getPlayer());
-    }
-
-    public static void addPlayerToPosSettingWaitingList(Player player) {
-        posSettingWaitingList.add(player);
     }
 }
