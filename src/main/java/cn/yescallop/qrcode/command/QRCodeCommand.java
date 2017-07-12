@@ -41,7 +41,7 @@ public class QRCodeCommand extends Command {
             sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.notFound"));
             return false;
         }
-        return cmd.execute(sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length - 1));
+        return cmd.execute(sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
     }
 
     Language getLanguage() {
@@ -55,7 +55,7 @@ public class QRCodeCommand extends Command {
     public void sendUsages(CommandSender sender) {
         List<String> list = new ArrayList<>();
         list.add(lang.translateString("commands.help.header"));
-        subCommands.keySet().forEach(c -> list.add(TextFormat.GREEN + "/qrcode " + c + ": " + TextFormat.RESET + lang.translateString("commands." + c + ".description")));
+        subCommands.keySet().forEach(c -> list.add(TextFormat.DARK_GREEN + "/qrcode " + c + ": " + TextFormat.WHITE + lang.translateString("commands." + c + ".description")));
         list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
     }
 }
