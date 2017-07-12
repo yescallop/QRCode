@@ -73,11 +73,19 @@ public class MinecraftQRCode {
         calculateArea();
     }
 
+    public String content() {
+        return content;
+    }
+
     public void content(String content) throws WriterException {
         if (!content.equals(this.content)) {
             this.content = content;
             refreshMatrix();
         }
+    }
+
+    public String charset() {
+        return charset;
     }
 
     public void charset(Charset charset) throws WriterException {
@@ -93,6 +101,10 @@ public class MinecraftQRCode {
             this.charset = charset;
             refreshMatrix();
         }
+    }
+
+    public ErrorCorrectionLevel errorCorrectionLevel() {
+        return ecLevel;
     }
 
     public void errorCorrectionLevel(ErrorCorrectionLevel ecLevel) throws WriterException {
@@ -330,6 +342,9 @@ public class MinecraftQRCode {
         EAST_DOWN;
 
         public static Orientation byName(String name) {
+            if (!name.equals(name.toLowerCase())) {
+                return null;
+            }
             try {
                 return Orientation.valueOf(name.toUpperCase());
             } catch (IllegalArgumentException e) {

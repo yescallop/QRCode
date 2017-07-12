@@ -11,6 +11,7 @@ public enum Parameter {
     BACKGROUND("background", "%params.block"),
     BORDER_SIZE("borderSize", "%params.nonNegativeInteger"),
     CHARSET("charset", Charset.availableCharsets().keySet().toArray(new String[0])),
+    CONTENT("content", "%params.text"),
     ERROR_CORRECTION_LEVEL("ecLevel", "L", "M", "Q", "H"),
     FOREGROUND("foreground", "%params.block"),
     MAGNIFIER("magnifier", "%params.positiveInteger"),

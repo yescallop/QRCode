@@ -28,11 +28,11 @@ public class QRCodeCommand extends Command {
 
         subCommands.add(new HelpCommand());
         subCommands.add(new NewCommand());
+        subCommands.add(new ParamsCommand());
         subCommands.add(new PlaceCommand());
         subCommands.add(new PreviewCommand());
         subCommands.add(new RemoveCommand());
         subCommands.add(new RotateCommand());
-        subCommands.add(new SetCommand());
         subCommands.add(new TurnCommand());
     }
 
