@@ -9,7 +9,7 @@ import cn.yescallop.qrcode.lang.Language;
 public abstract class SubCommand {
 
     private final String name;
-    private String[] aliases;
+    private String[] aliases = new String[0];
     protected final QRCodeCommand mainCommand;
     protected final Language lang;
 
