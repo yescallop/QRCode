@@ -114,7 +114,10 @@ public class MinecraftQRCode {
     }
 
     public void foreground(Block block) {
-        this.foreground = block;
+        if (!Block.equals(block, this.foreground)) {
+            this.foreground = block;
+            calculateArea();
+        }
     }
 
     public Block foreground() {
@@ -122,7 +125,10 @@ public class MinecraftQRCode {
     }
 
     public void background(Block block) {
-        this.background = block;
+        if (!Block.equals(block, this.background)) {
+            this.background = block;
+            calculateArea();
+        }
     }
 
     public Block background() {
