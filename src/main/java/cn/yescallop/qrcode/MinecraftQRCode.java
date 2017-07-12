@@ -29,8 +29,8 @@ public class MinecraftQRCode {
     private QRCodeMatrix matrix;
 
     private String content;
-    private String charset;
-    private ErrorCorrectionLevel ecLevel;
+    private String charset = "UTF-8";
+    private ErrorCorrectionLevel ecLevel = ErrorCorrectionLevel.L;
 
     private Map<Vector3, Boolean> area;
     private boolean previewing = false;
