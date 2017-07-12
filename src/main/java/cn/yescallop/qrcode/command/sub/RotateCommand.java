@@ -5,6 +5,7 @@ import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
+import cn.yescallop.qrcode.lang.Language;
 
 public class RotateCommand extends SubCommand {
 
@@ -19,7 +20,7 @@ public class RotateCommand extends SubCommand {
         }
         MinecraftQRCode qrCode = QRCodeManager.get(player);
         qrCode.rotate();
-        player.sendMessage(lang.translateString("commands.rotate.success"));
+        player.sendMessage(Language.translate("commands.rotate.success"));
         return true;
     }
 }

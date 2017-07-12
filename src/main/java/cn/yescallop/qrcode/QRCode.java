@@ -6,17 +6,11 @@ import cn.yescallop.qrcode.lang.Language;
 
 public class QRCode extends PluginBase {
 
-    private Language lang;
-
     @Override
     public void onEnable() {
-        lang = new Language(this.getServer().getLanguage().getLang());
+        Language.load(this.getServer().getLanguage().getLang());
         this.getServer().getCommandMap().register("QRCode", new QRCodeCommand(this));
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
-        this.getLogger().info(lang.translateString("qrcode.loaded"));
-    }
-
-    public Language getLanguage() {
-        return lang;
+        this.getLogger().info(Language.translate("qrcode.loaded"));
     }
 }

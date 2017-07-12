@@ -5,6 +5,7 @@ import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
+import cn.yescallop.qrcode.lang.Language;
 
 public class PlaceCommand extends SubCommand {
 
@@ -19,12 +20,12 @@ public class PlaceCommand extends SubCommand {
         }
         MinecraftQRCode qrCode = QRCodeManager.get(player);
         if (!qrCode.valid()) {
-            player.sendMessage(lang.translateString("commands.generic.heightLimit"));
+            player.sendMessage(Language.translate("commands.generic.heightLimit"));
             return false;
         }
         qrCode.place();
         QRCodeManager.remove(player);
-        player.sendMessage(lang.translateString("commands.place.success"));
+        player.sendMessage(Language.translate("commands.place.success"));
         return true;
     }
 }

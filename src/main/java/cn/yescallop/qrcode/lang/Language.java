@@ -10,39 +10,42 @@ import java.util.Map;
 
 public class Language {
 
-    private Map<String, String> lang = new HashMap<>();
-    private Map<String, String> fallbackLang = new HashMap<>();
+    private static Map<String, String> lang;
+    private static Map<String, String> fallbackLang;
 
-    public Language(String lang) {
+    public static void load(String langName) {
+        if (lang != null) {
+            return;
+        }
         try {
-            this.lang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream("lang/" + lang + ".ini"));
+            lang = loadLang(Language.class.getClassLoader().getResourceAsStream("lang/" + langName + ".ini"));
         } catch (NullPointerException e) {
-            this.lang = new HashMap<>();
+            lang = new HashMap<>();
         }
-        this.fallbackLang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream("lang/eng.ini"));
+        fallbackLang = loadLang(Language.class.getClassLoader().getResourceAsStream("lang/eng.ini"));
     }
 
-    public String translateString(String str, Object... params) {
-        String baseText = this.get(str);
-        baseText = this.parseTranslation(baseText != null ? baseText : str);
+    public static String translate(String str, Object... params) {
+        String baseText = get(str);
+        baseText = parseTranslation(baseText != null ? baseText : str);
         for (int i = 0; i < params.length; i++) {
-            baseText = baseText.replace("{%" + i + "}", this.parseTranslation(String.valueOf(params[i])));
+            baseText = baseText.replace("{%" + i + "}", parseTranslation(String.valueOf(params[i])));
         }
 
         return baseText;
     }
 
-    public String translateString(String str, String... params) {
-        String baseText = this.get(str);
-        baseText = this.parseTranslation(baseText != null ? baseText : str);
+    public static String translate(String str, String... params) {
+        String baseText = get(str);
+        baseText = parseTranslation(baseText != null ? baseText : str);
         for (int i = 0; i < params.length; i++) {
-            baseText = baseText.replace("{%" + i + "}", this.parseTranslation(params[i]));
+            baseText = baseText.replace("{%" + i + "}", parseTranslation(params[i]));
         }
 
         return baseText;
     }
 
-    private Map<String, String> loadLang(InputStream stream) {
+    private static Map<String, String> loadLang(InputStream stream) {
         try {
             String content = Utils.readFile(stream);
             Map<String, String> d = new HashMap<>();
@@ -73,25 +76,25 @@ public class Language {
         }
     }
 
-    private String internalGet(String id) {
-        if (this.lang.containsKey(id)) {
-            return this.lang.get(id);
-        } else if (this.fallbackLang.containsKey(id)) {
-            return this.fallbackLang.get(id);
+    private static String internalGet(String id) {
+        if (lang.containsKey(id)) {
+            return lang.get(id);
+        } else if (fallbackLang.containsKey(id)) {
+            return fallbackLang.get(id);
         }
         return null;
     }
 
-    private String get(String id) {
-        if (this.lang.containsKey(id)) {
-            return this.lang.get(id);
-        } else if (this.fallbackLang.containsKey(id)) {
-            return this.fallbackLang.get(id);
+    private static String get(String id) {
+        if (lang.containsKey(id)) {
+            return lang.get(id);
+        } else if (fallbackLang.containsKey(id)) {
+            return fallbackLang.get(id);
         }
         return id;
     }
 
-    private String parseTranslation(String text) {
+    private static String parseTranslation(String text) {
         String newString = "";
         text = String.valueOf(text);
 
@@ -109,7 +112,7 @@ public class Language {
                         c == '.' || c == '-') {
                     replaceString += String.valueOf(c);
                 } else {
-                    String t = this.internalGet(replaceString.substring(1));
+                    String t = internalGet(replaceString.substring(1));
                     if (t != null) {
                         newString += t;
                     } else {
@@ -130,7 +133,7 @@ public class Language {
         }
 
         if (replaceString != null) {
-            String t = this.internalGet(replaceString.substring(1));
+            String t = internalGet(replaceString.substring(1));
             if (t != null) {
                 newString += t;
             } else {

@@ -10,6 +10,7 @@ import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
+import cn.yescallop.qrcode.lang.Language;
 import com.google.zxing.WriterException;
 
 import java.util.stream.Stream;
@@ -27,7 +28,7 @@ public class NewCommand extends SubCommand {
             return false;
         }
         if (QRCodeManager.has(player)) {
-            player.sendMessage(lang.translateString("commands.new.fail"));
+            player.sendMessage(Language.translate("commands.new.fail"));
             return false;
         }
         MinecraftQRCode qrCode;
@@ -45,7 +46,7 @@ public class NewCommand extends SubCommand {
         }
         QRCodeManager.add(player, qrCode);
         EventListener.addPlayerToPosSettingWaitingList(player);
-        player.sendMessage(lang.translateString("commands.new.success"));
+        player.sendMessage(Language.translate("commands.new.success"));
         return true;
     }
 }

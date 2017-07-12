@@ -5,6 +5,7 @@ import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
+import cn.yescallop.qrcode.lang.Language;
 
 public class PreviewCommand extends SubCommand {
 
@@ -19,10 +20,10 @@ public class PreviewCommand extends SubCommand {
         }
         MinecraftQRCode qrCode = QRCodeManager.get(player);
         if (!qrCode.valid()) {
-            player.sendMessage(lang.translateString("commands.generic.heightLimit"));
+            player.sendMessage(Language.translate("commands.generic.heightLimit"));
             return false;
         }
-        player.sendMessage(lang.translateString("commands.preview." + (qrCode.switchPreview() ? "enabled" : "disabled")));
+        player.sendMessage(Language.translate("commands.preview." + (qrCode.switchPreview() ? "enabled" : "disabled")));
         return true;
     }
 }
