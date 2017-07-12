@@ -1,10 +1,11 @@
 package cn.yescallop.qrcode.command;
 
+import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.qrcode.QRCode;
-import cn.yescallop.qrcode.command.sub.HelpCommand;
+import cn.yescallop.qrcode.command.sub.*;
 import cn.yescallop.qrcode.lang.Language;
 
 import java.util.ArrayList;
@@ -28,11 +29,19 @@ public class QRCodeCommand extends Command {
         this.setPermission("qrcode.commands");
 
         subCommands.add(new HelpCommand(this));
+        subCommands.add(new NewCommand(this));
+        subCommands.add(new PlaceCommand(this));
+        subCommands.add(new PreviewCommand(this));
+        subCommands.add(new RemoveCommand(this));
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (!this.testPermission(sender)) {
+            return false;
+        }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.inGame"));
             return false;
         }
         if (args.length == 0) {
@@ -44,7 +53,11 @@ public class QRCodeCommand extends Command {
             sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.notFound"));
             return false;
         }
-        return cmd.get().execute(sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
+        return cmd.get().execute((Player) sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
+    }
+
+    public QRCode getPlugin() {
+        return plugin;
     }
 
     Language getLanguage() {

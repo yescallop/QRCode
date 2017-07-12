@@ -22,11 +22,21 @@ public class Language {
         this.fallbackLang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream("lang/eng.ini"));
     }
 
-    public String translateString(String str, String... params) {
+    public String translateString(String str, Object... params) {
         String baseText = this.get(str);
         baseText = this.parseTranslation(baseText != null ? baseText : str);
         for (int i = 0; i < params.length; i++) {
             baseText = baseText.replace("{%" + i + "}", this.parseTranslation(String.valueOf(params[i])));
+        }
+
+        return baseText;
+    }
+
+    public String translateString(String str, String... params) {
+        String baseText = this.get(str);
+        baseText = this.parseTranslation(baseText != null ? baseText : str);
+        for (int i = 0; i < params.length; i++) {
+            baseText = baseText.replace("{%" + i + "}", this.parseTranslation(params[i]));
         }
 
         return baseText;

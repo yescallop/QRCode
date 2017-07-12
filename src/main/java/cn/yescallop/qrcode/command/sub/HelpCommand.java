@@ -1,6 +1,6 @@
 package cn.yescallop.qrcode.command.sub;
 
-import cn.nukkit.command.CommandSender;
+import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
@@ -14,17 +14,17 @@ public class HelpCommand extends SubCommand {
     }
 
     @Override
-    protected boolean execute(CommandSender sender, String[] args) {
+    protected boolean execute(Player player, String[] args) {
         if (args.length == 0) {
-            mainCommand.sendUsages(sender);
+            mainCommand.sendUsages(player);
             return true;
         }
         Optional<SubCommand> command = mainCommand.getSubCommand(args[0]);
         if (!command.isPresent()) {
-            sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.notFound"));
+            player.sendMessage(TextFormat.RED + lang.translateString("commands.generic.notFound"));
             return false;
         }
-        command.get().sendUsage(sender);
+        command.get().sendUsage(player);
         return true;
     }
 }

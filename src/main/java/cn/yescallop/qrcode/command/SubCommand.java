@@ -3,15 +3,15 @@ package cn.yescallop.qrcode.command;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
-import cn.nukkit.utils.TextFormat;
+import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.lang.Language;
 
 public abstract class SubCommand {
 
-    private final String name;
-    private String[] aliases = new String[0];
     protected final QRCodeCommand mainCommand;
     protected final Language lang;
+    private final String name;
+    private String[] aliases = new String[0];
 
     protected SubCommand(QRCodeCommand mainCommand, String name) {
         this.name = name;
@@ -19,27 +19,27 @@ public abstract class SubCommand {
         this.lang = mainCommand.getLanguage();
     }
 
-    public void setAliases(String... aliases) {
-        this.aliases = aliases;
-    }
-
     public String[] getAliases() {
         return aliases;
+    }
+
+    public void setAliases(String... aliases) {
+        this.aliases = aliases;
     }
 
     public String getName() {
         return name;
     }
 
-    protected abstract boolean execute(CommandSender sender, String[] args);
+    protected abstract boolean execute(Player player, String[] args);
 
     public void sendUsage(CommandSender sender) {
         sender.sendMessage(new TranslationContainer("commands.generic.usage", lang.translateString("commands." + this.name + ".usage")));
     }
 
-    protected boolean testInGame(CommandSender sender) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.inGame"));
+    protected boolean checkHasQRCode(Player player) {
+        if (!QRCodeManager.has(player)) {
+            player.sendMessage(lang.translateString("commands.generic.noQRCode"));
             return false;
         }
         return true;
