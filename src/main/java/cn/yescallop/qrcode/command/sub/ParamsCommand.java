@@ -107,7 +107,7 @@ public class ParamsCommand extends SubCommand {
             } else {
                 Block block;
                 MinecraftQRCode qrCode = QRCodeManager.get(player);
-                String value = Stream.of(args).skip(3)
+                String value = Stream.of(args).skip(2)
                         .reduce((a, b) -> a + " " + b)
                         .get();
                 switch (param) {
