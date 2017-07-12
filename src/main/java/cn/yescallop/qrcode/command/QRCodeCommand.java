@@ -33,6 +33,8 @@ public class QRCodeCommand extends Command {
         subCommands.add(new PlaceCommand(this));
         subCommands.add(new PreviewCommand(this));
         subCommands.add(new RemoveCommand(this));
+        subCommands.add(new RotateCommand(this));
+        subCommands.add(new TurnCommand(this));
     }
 
     @Override
