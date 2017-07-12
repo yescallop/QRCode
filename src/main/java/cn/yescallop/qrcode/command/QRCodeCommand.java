@@ -1,6 +1,5 @@
 package cn.yescallop.qrcode.command;
 
-import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
@@ -30,10 +29,6 @@ public class QRCodeCommand extends Command {
         if (!this.testPermission(sender)) {
             return false;
         }
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(TextFormat.RED + lang.translateString("commands.generic.inGame"));
-            return false;
-        }
         if (args.length == 0) {
             sendUsages(sender);
             return false;
@@ -48,7 +43,7 @@ public class QRCodeCommand extends Command {
 
     private void sendUsages(CommandSender sender) {
         List<String> list = new ArrayList<>();
-        list.add(lang.translateString("commands.generic.subCommands"));
+        list.add(lang.translateString("commands.help.header"));
         subCommands.keySet().forEach(c -> list.add(TextFormat.GREEN + "/qrcode " + c + ": " + TextFormat.RESET + lang.translateString("commands." + c + ".description")));
         list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
     }
