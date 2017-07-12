@@ -10,17 +10,17 @@ import java.util.Optional;
 
 public class HelpCommand extends SubCommand {
 
-    public HelpCommand(QRCodeCommand mainCommand) {
-        super(mainCommand, "help");
+    public HelpCommand() {
+        super("help");
     }
 
     @Override
     protected boolean execute(Player player, String[] args) {
         if (args.length == 0) {
-            mainCommand.sendUsages(player);
+            QRCodeCommand.sendUsages(player);
             return true;
         }
-        Optional<SubCommand> command = mainCommand.getSubCommand(args[0]);
+        Optional<SubCommand> command = QRCodeCommand.getSubCommand(args[0]);
         if (!command.isPresent()) {
             player.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));
             return false;

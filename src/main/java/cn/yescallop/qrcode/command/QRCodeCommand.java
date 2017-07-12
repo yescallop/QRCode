@@ -15,24 +15,35 @@ import java.util.Optional;
 
 public class QRCodeCommand extends Command {
 
-    private QRCode plugin;
-    private List<SubCommand> subCommands = new ArrayList<>();
+    private static List<SubCommand> subCommands = new ArrayList<>();
+    private static QRCode plugin;
 
     public QRCodeCommand(QRCode plugin) {
         super("qrcode");
-        this.plugin = plugin;
+        QRCodeCommand.plugin = plugin;
         this.setAliases(new String[]{"qr"});
         this.description = Language.translate("commands.main.description");
         this.usageMessage = Language.translate("commands.main.usage");
         this.setPermission("qrcode.commands");
 
-        subCommands.add(new HelpCommand(this));
-        subCommands.add(new NewCommand(this));
-        subCommands.add(new PlaceCommand(this));
-        subCommands.add(new PreviewCommand(this));
-        subCommands.add(new RemoveCommand(this));
-        subCommands.add(new RotateCommand(this));
-        subCommands.add(new TurnCommand(this));
+        subCommands.add(new HelpCommand());
+        subCommands.add(new NewCommand());
+        subCommands.add(new PlaceCommand());
+        subCommands.add(new PreviewCommand());
+        subCommands.add(new RemoveCommand());
+        subCommands.add(new RotateCommand());
+        subCommands.add(new TurnCommand());
+    }
+
+    public static Optional<SubCommand> getSubCommand(String name) {
+        return subCommands.stream().filter(c -> c.getName().equals(name)).findAny();
+    }
+
+    public static void sendUsages(CommandSender sender) {
+        List<String> list = new ArrayList<>();
+        list.add(Language.translate("commands.help.header"));
+        subCommands.forEach(c -> list.add(TextFormat.DARK_GREEN + "/qrcode " + c.getName() + ": " + TextFormat.WHITE + Language.translate("commands." + c.getName() + ".description")));
+        list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
     }
 
     @Override
@@ -48,7 +59,7 @@ public class QRCodeCommand extends Command {
             sendUsages(sender);
             return false;
         }
-        Optional<SubCommand> cmd = this.getSubCommand(args[0]);
+        Optional<SubCommand> cmd = getSubCommand(args[0]);
         if (!cmd.isPresent()) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));
             return false;
@@ -56,18 +67,7 @@ public class QRCodeCommand extends Command {
         return cmd.get().execute((Player) sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
     }
 
-    public QRCode getPlugin() {
+    public static QRCode getPlugin() {
         return plugin;
-    }
-
-    public Optional<SubCommand> getSubCommand(String name) {
-        return subCommands.stream().filter(c -> c.getName().equals(name)).findAny();
-    }
-
-    public void sendUsages(CommandSender sender) {
-        List<String> list = new ArrayList<>();
-        list.add(Language.translate("commands.help.header"));
-        subCommands.forEach(c -> list.add(TextFormat.DARK_GREEN + "/qrcode " + c.getName() + ": " + TextFormat.WHITE + Language.translate("commands." + c.getName() + ".description")));
-        list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
     }
 }

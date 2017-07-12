@@ -3,14 +3,13 @@ package cn.yescallop.qrcode.command.sub;
 import cn.nukkit.Player;
 import cn.yescallop.qrcode.QRCodeManager;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
-import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
 import cn.yescallop.qrcode.lang.Language;
 
 public class TurnCommand extends SubCommand {
 
-    public TurnCommand(QRCodeCommand mainCommand) {
-        super(mainCommand, "turn");
+    public TurnCommand() {
+        super("turn");
     }
 
     @Override

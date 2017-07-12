@@ -8,12 +8,18 @@ import cn.yescallop.qrcode.lang.Language;
 
 public abstract class SubCommand {
 
-    protected final QRCodeCommand mainCommand;
     private final String name;
 
-    protected SubCommand(QRCodeCommand mainCommand, String name) {
+    protected SubCommand(String name) {
         this.name = name;
-        this.mainCommand = mainCommand;
+    }
+
+    protected static boolean checkHasQRCode(Player player) {
+        if (!QRCodeManager.has(player)) {
+            player.sendMessage(Language.translate("commands.generic.noQRCode"));
+            return false;
+        }
+        return true;
     }
 
     public String getName() {
@@ -24,13 +30,5 @@ public abstract class SubCommand {
 
     public void sendUsage(CommandSender sender) {
         sender.sendMessage(new TranslationContainer("commands.generic.usage", Language.translate("commands." + this.name + ".usage")));
-    }
-
-    protected boolean checkHasQRCode(Player player) {
-        if (!QRCodeManager.has(player)) {
-            player.sendMessage(Language.translate("commands.generic.noQRCode"));
-            return false;
-        }
-        return true;
     }
 }

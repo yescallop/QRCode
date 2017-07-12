@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 
 public class NewCommand extends SubCommand {
 
-    public NewCommand(QRCodeCommand mainCommand) {
-        super(mainCommand, "new");
+    public NewCommand() {
+        super("new");
     }
 
     @Override
@@ -40,7 +40,7 @@ public class NewCommand extends SubCommand {
                     .orientation(MinecraftQRCode.Orientation.SOUTH_UP)
                     .build();
         } catch (WriterException e) {
-            mainCommand.getPlugin().getLogger().error("Exception caught while creating QR code", e);
+            QRCodeCommand.getPlugin().getLogger().error("Exception caught while creating QR code", e);
             player.sendMessage(new TextContainer(TextFormat.RED + "%commands.generic.exception"));
             return false;
         }
