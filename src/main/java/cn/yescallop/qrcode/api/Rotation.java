@@ -1,4 +1,4 @@
-package cn.yescallop.qrcode;
+package cn.yescallop.qrcode.api;
 
 public enum Rotation {
     NORTH(0), WEST(90), SOUTH(180), EAST(270);

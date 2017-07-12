@@ -1,8 +1,8 @@
 package cn.yescallop.qrcode.command.sub;
 
 import cn.nukkit.Player;
-import cn.yescallop.qrcode.MinecraftQRCode;
 import cn.yescallop.qrcode.QRCodeManager;
+import cn.yescallop.qrcode.api.MinecraftQRCode;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
 

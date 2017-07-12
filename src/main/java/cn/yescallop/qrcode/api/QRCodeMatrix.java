@@ -1,4 +1,4 @@
-package cn.yescallop.qrcode;
+package cn.yescallop.qrcode.api;
 
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;

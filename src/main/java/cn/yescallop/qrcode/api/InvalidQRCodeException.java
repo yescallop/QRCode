@@ -1,4 +1,4 @@
-package cn.yescallop.qrcode;
+package cn.yescallop.qrcode.api;
 
 public class InvalidQRCodeException extends RuntimeException {
 

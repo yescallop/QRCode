@@ -1,6 +1,7 @@
 package cn.yescallop.qrcode;
 
 import cn.nukkit.Player;
+import cn.yescallop.qrcode.api.MinecraftQRCode;
 
 import java.util.HashMap;
 import java.util.Map;

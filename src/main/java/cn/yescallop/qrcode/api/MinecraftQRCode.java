@@ -1,4 +1,4 @@
-package cn.yescallop.qrcode;
+package cn.yescallop.qrcode.api;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
