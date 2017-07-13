@@ -63,6 +63,17 @@ public class MinecraftQRCode {
         previewing = false;
     }
 
+    public boolean hasPos() {
+        return this.level != null && this.pos != null;
+    }
+
+    public Position pos() {
+        if (this.level == null || this.pos == null) {
+            return null;
+        }
+        return Position.fromObject(pos, level);
+    }
+
     public void pos(Position pos) {
         pos(pos.level, pos);
     }

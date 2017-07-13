@@ -22,6 +22,10 @@ public class PreviewCommand extends SubCommand {
             return false;
         }
         MinecraftQRCode qrCode = QRCodeManager.get(player);
+        if (!qrCode.hasPos()) {
+            player.sendMessage(Language.translate("commands.generic.noPos"));
+            return false;
+        }
         if (!qrCode.valid()) {
             player.sendMessage(Language.translate("commands.generic.heightLimit"));
             return false;
