@@ -39,5 +39,6 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         posSettingWaitingList.remove(event.getPlayer());
+        QRCodeManager.remove(event.getPlayer());
     }
 }

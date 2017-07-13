@@ -139,7 +139,7 @@ public class ParamsCommand extends SubCommand {
                             return false;
                         }
                         try {
-                            qrCode.charset(args[1]);
+                            qrCode.charset(value);
                         } catch (WriterException e) {
                             QRCodeCommand.getPlugin().getLogger().error("Exception caught while creating QR code", e);
                             player.sendMessage(new TextContainer(TextFormat.RED + "%commands.generic.exception"));
