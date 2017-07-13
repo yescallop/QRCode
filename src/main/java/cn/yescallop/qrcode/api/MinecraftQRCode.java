@@ -320,7 +320,16 @@ public class MinecraftQRCode {
                 break;
         }
         valid = area.keySet().stream().map(v -> v.y).max(Double::compareTo).get() < 255;
-        if (valid && previewing) preview();
+        if (valid && previewing) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                preview();
+            }).start();
+        }
     }
 
     public Map<Vector3, Boolean> area() {

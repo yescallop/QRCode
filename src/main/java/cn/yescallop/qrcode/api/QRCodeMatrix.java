@@ -115,7 +115,7 @@ public class QRCodeMatrix implements Cloneable {
         return this;
     }
 
-    public QRCodeMatrix turnHorizontally() {
+    public QRCodeMatrix turnVertically() {
         boolean[][] result = deepClone(this.matrix);
         for (int x = 0; x < size; x++) {
             System.arraycopy(matrix[x], 0, result[size - 1 - x], 0, size);
@@ -123,7 +123,7 @@ public class QRCodeMatrix implements Cloneable {
         return new QRCodeMatrix(result, rotation);
     }
 
-    public QRCodeMatrix turnVertically() {
+    public QRCodeMatrix turnHorizontally() {
         boolean[][] result = deepClone(this.matrix);
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
@@ -134,17 +134,21 @@ public class QRCodeMatrix implements Cloneable {
     }
 
     public QRCodeMatrix magnify(int m) {
+        if (m < 1) {
+            throw new IllegalArgumentException("m<1");
+        }
         if (m == 1) {
             return this;
         }
         boolean[][] result = new boolean[size * m][size * m];
         for (int x = 0; x < size; x++) {
-            int j = x * m;
+            int k = x * m;
             for (int y = 0; y < size; y++) {
-                int k = y * m;
-                result[j][k] = matrix[x][y];
-                for (int i = 1; i < m; i++) {
-                    result[j][k] = result[j + i][k] = result[j][k + i] = result[j + i][k + i] = matrix[x][y];
+                int l = y * m;
+                for (int i = 0; i < m; i++) {
+                    for (int j = 0; j < m; j++) {
+                        result[k + i][l + j] = matrix[x][y];
+                    }
                 }
             }
         }
@@ -152,6 +156,9 @@ public class QRCodeMatrix implements Cloneable {
     }
 
     public QRCodeMatrix border(int s) {
+        if (s < 0) {
+            throw new IllegalArgumentException("s<0");
+        }
         if (s == 0) {
             return this;
         }
