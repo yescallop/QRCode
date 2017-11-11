@@ -4,12 +4,12 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.lang.TextContainer;
 import cn.nukkit.utils.TextFormat;
-import cn.yescallop.qrcode.QRCodeManager;
+import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
+import cn.yescallop.qrcode.api.QRCodeManager;
 import cn.yescallop.qrcode.command.Parameter;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
-import cn.yescallop.qrcode.lang.Language;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 

@@ -5,12 +5,11 @@ import cn.nukkit.block.BlockWool;
 import cn.nukkit.lang.TextContainer;
 import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.TextFormat;
-import cn.yescallop.qrcode.EventListener;
-import cn.yescallop.qrcode.QRCodeManager;
+import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.api.MinecraftQRCode;
+import cn.yescallop.qrcode.api.QRCodeManager;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
-import cn.yescallop.qrcode.lang.Language;
 import com.google.zxing.WriterException;
 
 import java.util.stream.Stream;
@@ -45,7 +44,6 @@ public class NewCommand extends SubCommand {
             return false;
         }
         QRCodeManager.add(player, qrCode);
-        EventListener.addPlayerToPosSettingWaitingList(player);
         player.sendMessage(Language.translate("commands.new.success"));
         return true;
     }

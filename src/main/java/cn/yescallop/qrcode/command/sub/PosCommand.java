@@ -1,9 +1,9 @@
 package cn.yescallop.qrcode.command.sub;
 
 import cn.nukkit.Player;
-import cn.yescallop.qrcode.EventListener;
+import cn.yescallop.qrcode.Language;
+import cn.yescallop.qrcode.api.QRCodeManager;
 import cn.yescallop.qrcode.command.SubCommand;
-import cn.yescallop.qrcode.lang.Language;
 
 public class PosCommand extends SubCommand {
 
@@ -20,7 +20,7 @@ public class PosCommand extends SubCommand {
         if (!checkHasQRCode(player)) {
             return false;
         }
-        EventListener.addPlayerToPosSettingWaitingList(player);
+        QRCodeManager.addPlayerToPosSettingWaitingList(player);
         player.sendMessage(Language.translate("commands.pos.success"));
         return true;
     }

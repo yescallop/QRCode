@@ -2,9 +2,9 @@ package cn.yescallop.qrcode.command.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.TextFormat;
+import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
-import cn.yescallop.qrcode.lang.Language;
 
 import java.util.Optional;
 

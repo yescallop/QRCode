@@ -3,8 +3,8 @@ package cn.yescallop.qrcode.command;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
-import cn.yescallop.qrcode.QRCodeManager;
-import cn.yescallop.qrcode.lang.Language;
+import cn.yescallop.qrcode.Language;
+import cn.yescallop.qrcode.api.QRCodeManager;
 
 public abstract class SubCommand {
 

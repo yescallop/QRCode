@@ -1,4 +1,4 @@
-package cn.yescallop.qrcode.lang;
+package cn.yescallop.qrcode;
 
 import cn.nukkit.Server;
 import cn.nukkit.utils.Utils;
@@ -13,7 +13,11 @@ public class Language {
     private static Map<String, String> lang;
     private static Map<String, String> fallbackLang;
 
-    public static void load(String langName) {
+    private Language() {
+        //no instance
+    }
+
+    static void load(String langName) {
         if (lang != null) {
             return;
         }
@@ -59,15 +63,15 @@ public class Language {
                     continue;
                 }
                 String key = t[0];
-                String value = "";
+                StringBuilder value = new StringBuilder();
                 for (int i = 1; i < t.length - 1; i++) {
-                    value += t[i] + "=";
+                    value.append(t[i]).append("=");
                 }
-                value += t[t.length - 1];
-                if (value.equals("")) {
+                value.append(t[t.length - 1]);
+                if (value.toString().equals("")) {
                     continue;
                 }
-                d.put(key, value);
+                d.put(key, value.toString());
             }
             return d;
         } catch (IOException e) {
@@ -95,10 +99,10 @@ public class Language {
     }
 
     private static String parseTranslation(String text) {
-        String newString = "";
+        StringBuilder newString = new StringBuilder();
         text = String.valueOf(text);
 
-        String replaceString = null;
+        StringBuilder replaceString = null;
 
         int len = text.length();
 
@@ -110,36 +114,36 @@ public class Language {
                         || (ord >= 0x41 && ord <= 0x5a) // A-Z
                         || (ord >= 0x61 && ord <= 0x7a) || // a-z
                         c == '.' || c == '-') {
-                    replaceString += String.valueOf(c);
+                    replaceString.append(String.valueOf(c));
                 } else {
                     String t = internalGet(replaceString.substring(1));
                     if (t != null) {
-                        newString += t;
+                        newString.append(t);
                     } else {
-                        newString += replaceString;
+                        newString.append(replaceString);
                     }
                     replaceString = null;
                     if (c == '%') {
-                        replaceString = String.valueOf(c);
+                        replaceString = new StringBuilder(String.valueOf(c));
                     } else {
-                        newString += String.valueOf(c);
+                        newString.append(String.valueOf(c));
                     }
                 }
             } else if (c == '%') {
-                replaceString = String.valueOf(c);
+                replaceString = new StringBuilder(String.valueOf(c));
             } else {
-                newString += String.valueOf(c);
+                newString.append(String.valueOf(c));
             }
         }
 
         if (replaceString != null) {
             String t = internalGet(replaceString.substring(1));
             if (t != null) {
-                newString += t;
+                newString.append(t);
             } else {
-                newString += replaceString;
+                newString.append(replaceString);
             }
         }
-        return newString;
+        return newString.toString();
     }
 }

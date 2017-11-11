@@ -4,9 +4,9 @@ import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
+import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.QRCode;
 import cn.yescallop.qrcode.command.sub.*;
-import cn.yescallop.qrcode.lang.Language;
 
 import java.util.ArrayList;
 import java.util.Arrays;
