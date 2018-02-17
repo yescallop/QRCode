@@ -6,8 +6,6 @@ import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.command.QRCodeCommand;
 import cn.yescallop.qrcode.command.SubCommand;
 
-import java.util.Optional;
-
 public class HelpCommand extends SubCommand {
 
     public HelpCommand() {
@@ -24,12 +22,12 @@ public class HelpCommand extends SubCommand {
             this.sendUsage(player);
             return false;
         }
-        Optional<SubCommand> command = QRCodeCommand.getSubCommand(args[0]);
-        if (!command.isPresent()) {
+        SubCommand command = QRCodeCommand.getSubCommand(args[0]);
+        if (command != null) {
             player.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));
             return false;
         }
-        command.get().sendUsage(player);
+        command.sendUsage(player);
         return true;
     }
 }

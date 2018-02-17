@@ -11,7 +11,7 @@ import cn.yescallop.qrcode.api.QRCodeManager;
 class EventListener implements Listener {
 
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && QRCodeManager.isPlayerSettingPos(player)) {

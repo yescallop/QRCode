@@ -8,14 +8,11 @@ import cn.yescallop.qrcode.Language;
 import cn.yescallop.qrcode.QRCode;
 import cn.yescallop.qrcode.command.sub.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class QRCodeCommand extends Command {
 
-    private static List<SubCommand> subCommands = new ArrayList<>();
+    private static Map<String, SubCommand> subCommands = new HashMap<>();
     private static QRCode plugin;
 
     public QRCodeCommand(QRCode plugin) {
@@ -26,25 +23,25 @@ public class QRCodeCommand extends Command {
         this.usageMessage = Language.translate("commands.main.usage");
         this.setPermission("qrcode.commands");
 
-        subCommands.add(new HelpCommand());
-        subCommands.add(new NewCommand());
-        subCommands.add(new ParamsCommand());
-        subCommands.add(new PlaceCommand());
-        subCommands.add(new PosCommand());
-        subCommands.add(new PreviewCommand());
-        subCommands.add(new RemoveCommand());
-        subCommands.add(new RotateCommand());
-        subCommands.add(new TurnCommand());
+        subCommands.put("help", new HelpCommand());
+        subCommands.put("new", new NewCommand());
+        subCommands.put("params", new ParamsCommand());
+        subCommands.put("place", new PlaceCommand());
+        subCommands.put("pos", new PosCommand());
+        subCommands.put("preview", new PreviewCommand());
+        subCommands.put("remove", new RemoveCommand());
+        subCommands.put("rotate", new RotateCommand());
+        subCommands.put("turn", new TurnCommand());
     }
 
-    public static Optional<SubCommand> getSubCommand(String name) {
-        return subCommands.stream().filter(c -> c.getName().equals(name)).findAny();
+    public static SubCommand getSubCommand(String name) {
+        return subCommands.get(name);
     }
 
     public static void sendUsages(CommandSender sender) {
         List<String> list = new ArrayList<>();
         list.add(Language.translate("commands.help.header"));
-        subCommands.forEach(c -> list.add(TextFormat.DARK_GREEN + "/qrcode " + c.getName() + ": " + TextFormat.WHITE + Language.translate("commands." + c.getName() + ".description")));
+        subCommands.forEach((n, c) -> list.add(TextFormat.DARK_GREEN + "/qrcode " + n + ": " + TextFormat.WHITE + Language.translate("commands." + n + ".description")));
         list.stream().reduce((a, b) -> a + "\n" + b).ifPresent(sender::sendMessage);
     }
 
@@ -65,11 +62,11 @@ public class QRCodeCommand extends Command {
             sendUsages(sender);
             return false;
         }
-        Optional<SubCommand> cmd = getSubCommand(args[0]);
-        if (!cmd.isPresent()) {
+        SubCommand subCommand = getSubCommand(args[0]);
+        if (subCommand == null) {
             sender.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));
             return false;
         }
-        return cmd.get().execute((Player) sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
+        return subCommand.execute((Player) sender, args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length));
     }
 }

@@ -1,10 +1,11 @@
 package cn.yescallop.qrcode;
 
 import cn.nukkit.Server;
-import cn.nukkit.utils.Utils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,27 +52,18 @@ public class Language {
 
     private static Map<String, String> loadLang(InputStream stream) {
         try {
-            String content = Utils.readFile(stream);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             Map<String, String> d = new HashMap<>();
-            for (String line : content.split("\n")) {
+            String line;
+            while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if (line.equals("") || line.charAt(0) == '#') {
+                if (line.isEmpty() || line.charAt(0) == '#') {
                     continue;
                 }
-                String[] t = line.split("=");
-                if (t.length < 2) {
+                int index = line.indexOf('=');
+                if (index <= 0 || index == line.length() - 1)
                     continue;
-                }
-                String key = t[0];
-                StringBuilder value = new StringBuilder();
-                for (int i = 1; i < t.length - 1; i++) {
-                    value.append(t[i]).append("=");
-                }
-                value.append(t[t.length - 1]);
-                if (value.toString().equals("")) {
-                    continue;
-                }
-                d.put(key, value.toString());
+                d.put(line.substring(0, index - 1), line.substring(index + 1, line.length() - 1));
             }
             return d;
         } catch (IOException e) {
@@ -100,8 +92,6 @@ public class Language {
 
     private static String parseTranslation(String text) {
         StringBuilder newString = new StringBuilder();
-        text = String.valueOf(text);
-
         StringBuilder replaceString = null;
 
         int len = text.length();
@@ -109,12 +99,11 @@ public class Language {
         for (int i = 0; i < len; ++i) {
             char c = text.charAt(i);
             if (replaceString != null) {
-                int ord = c;
-                if ((ord >= 0x30 && ord <= 0x39) // 0-9
-                        || (ord >= 0x41 && ord <= 0x5a) // A-Z
-                        || (ord >= 0x61 && ord <= 0x7a) || // a-z
+                if ((c >= 0x30 && c <= 0x39) // 0-9
+                        || (c >= 0x41 && c <= 0x5a) // A-Z
+                        || (c >= 0x61 && c <= 0x7a) || // a-z
                         c == '.' || c == '-') {
-                    replaceString.append(String.valueOf(c));
+                    replaceString.append(c);
                 } else {
                     String t = internalGet(replaceString.substring(1));
                     if (t != null) {
@@ -124,15 +113,15 @@ public class Language {
                     }
                     replaceString = null;
                     if (c == '%') {
-                        replaceString = new StringBuilder(String.valueOf(c));
+                        replaceString = new StringBuilder().append(c);
                     } else {
-                        newString.append(String.valueOf(c));
+                        newString.append(c);
                     }
                 }
             } else if (c == '%') {
-                replaceString = new StringBuilder(String.valueOf(c));
+                replaceString = new StringBuilder().append(c);
             } else {
-                newString.append(String.valueOf(c));
+                newString.append(c);
             }
         }
 

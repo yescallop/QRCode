@@ -2,6 +2,7 @@ package cn.yescallop.qrcode.command.sub;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.item.Item;
 import cn.nukkit.lang.TextContainer;
 import cn.nukkit.utils.TextFormat;
 import cn.yescallop.qrcode.Language;
@@ -26,20 +27,8 @@ public class ParamsCommand extends SubCommand {
     }
 
     private static Block parseBlock(String str) {
-        String[] arr = str.split(":");
-        if (arr.length == 0 || arr.length > 2) return null;
-        int id;
-        int meta;
-        try {
-            id = Integer.parseInt(arr[0]);
-            meta = arr.length == 1 ? 0 : Integer.parseInt(arr[1]);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-        if (id < 0 || id > 255 || meta < 0 || meta > 15) {
-            return null;
-        }
-        return Block.get(id, meta);
+        Item item = Item.fromString(str);
+        return item.canBePlaced() ? item.getBlock() : null;
     }
 
     private static void sendAvailableValues(Player player, Parameter param) {
@@ -61,7 +50,10 @@ public class ParamsCommand extends SubCommand {
     private static String getParamValue(MinecraftQRCode qrCode, Parameter param) {
         switch (param) {
             case BACKGROUND:
-                return qrCode.background().getId() + ":" + qrCode.background().getDamage();
+                return String.format("%s (%d:%d)",
+                        qrCode.background().getName(),
+                        qrCode.background().getId(),
+                        qrCode.background().getDamage());
             case BORDER_SIZE:
                 return String.valueOf(qrCode.borderSize());
             case CHARSET:
@@ -71,7 +63,10 @@ public class ParamsCommand extends SubCommand {
             case ERROR_CORRECTION_LEVEL:
                 return qrCode.errorCorrectionLevel().name();
             case FOREGROUND:
-                return qrCode.foreground().getId() + ":" + qrCode.foreground().getDamage();
+                return String.format("%s (%d:%d)",
+                        qrCode.foreground().getName(),
+                        qrCode.foreground().getId(),
+                        qrCode.foreground().getDamage());
             case MAGNIFIER:
                 return String.valueOf(qrCode.mgnifier());
             case ORIENTATION:

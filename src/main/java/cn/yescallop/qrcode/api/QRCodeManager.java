@@ -2,16 +2,16 @@ package cn.yescallop.qrcode.api;
 
 import cn.nukkit.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class QRCodeManager {
 
     private static Map<Player, MinecraftQRCode> qrCodes = new HashMap<>();
 
-    private static List<Player> posSettingWaitingList = new ArrayList<>();
+    private static Set<Player> posSettingWaitingList = new HashSet<>();
 
     public static boolean isPlayerSettingPos(Player player) {
         return posSettingWaitingList.contains(player);
