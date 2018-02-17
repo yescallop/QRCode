@@ -23,7 +23,7 @@ public class HelpCommand extends SubCommand {
             return false;
         }
         SubCommand command = QRCodeCommand.getSubCommand(args[0]);
-        if (command != null) {
+        if (command == null) {
             player.sendMessage(TextFormat.RED + Language.translate("commands.generic.notFound"));
             return false;
         }
