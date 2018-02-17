@@ -63,7 +63,7 @@ public class Language {
                 int index = line.indexOf('=');
                 if (index <= 0 || index == line.length() - 1)
                     continue;
-                d.put(line.substring(0, index - 1), line.substring(index + 1, line.length() - 1));
+                d.put(line.substring(0, index), line.substring(index + 1, line.length()));
             }
             return d;
         } catch (IOException e) {
