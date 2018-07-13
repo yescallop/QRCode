@@ -68,7 +68,7 @@ public class ParamsCommand extends SubCommand {
                         qrCode.foreground().getId(),
                         qrCode.foreground().getDamage());
             case MAGNIFIER:
-                return String.valueOf(qrCode.mgnifier());
+                return String.valueOf(qrCode.magnifier());
             case ORIENTATION:
                 return qrCode.orientation().getName();
         }
