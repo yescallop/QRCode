@@ -179,7 +179,7 @@ public class MinecraftQRCode {
         }
     }
 
-    public int mgnifier() {
+    public int magnifier() {
         return magnifier;
     }
 
