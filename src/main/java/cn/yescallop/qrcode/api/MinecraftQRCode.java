@@ -3,6 +3,7 @@ package cn.yescallop.qrcode.api;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.GlobalBlockPalette;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
@@ -54,8 +55,7 @@ public class MinecraftQRCode {
             pk.x = (int) v.x;
             pk.y = (int) v.y;
             pk.z = (int) v.z;
-            pk.blockId = block.getId();
-            pk.blockData = block.getDamage();
+            pk.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(block.getId(), block.getDamage());
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
@@ -224,8 +224,7 @@ public class MinecraftQRCode {
             pk.x = (int) v.x;
             pk.y = (int) v.y;
             pk.z = (int) v.z;
-            pk.blockId = block.getId();
-            pk.blockData = block.getDamage();
+            pk.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(block.getId(), block.getDamage());
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
@@ -250,8 +249,7 @@ public class MinecraftQRCode {
             pk.x = (int) v.x;
             pk.y = (int) v.y;
             pk.z = (int) v.z;
-            pk.blockId = fullBlock >> 4;
-            pk.blockData = fullBlock & 0xf;
+            pk.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(fullBlock);
             pk.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
             return pk;
         }).toArray(UpdateBlockPacket[]::new);
